@@ -59,6 +59,8 @@ private slots:
 
     void on_addStateRoad_clicked();
 
+    void on_searchRoad_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene scene;
