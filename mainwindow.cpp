@@ -369,3 +369,60 @@ void MainWindow::on_addStateRoad_clicked()
     way1->draw(scene);
 }
 
+void MainWindow::on_searchRoad_clicked()
+{
+    Dialog newDialog;
+    int i = newDialog.exec();
+    qDebug() << "Der Rückgabewert: " << i;
+
+    if (i == 1)
+    {
+        QString startCityName = newDialog.getCity1Name();
+        QString endCityName = newDialog.getCity2Name();
+
+        if(map.findCity(startCityName) == nullptr || map.findCity(endCityName) == nullptr)
+        {
+            qDebug() << "please enter valid cities!";
+            return;
+        }
+        else
+        {
+            City* startCity = map.findCity(startCityName);
+            City* endCity = map.findCity(endCityName);
+
+           if (startCity && endCity) {
+        QVector<Street*> path = Dijkstra::search(map, startCityName, endCityName);
+
+        if (path.isEmpty())
+        {
+            qDebug() << "No path found from" << startCityName << "to" << endCityName;
+        }
+        else
+        {
+            qDebug() << "Shortest path from" << startCityName << "to" << endCityName << ":";
+            for (Street* street : path)
+            {
+                qDebug() << street->getStadt1()->getName() << "to" << street->getStadt2()->getName();
+            }
+
+
+            scene.clear();
+            map.draw(scene);
+
+            for (Street* street : path)
+            {
+                street->drawRed(scene);
+            }
+        }
+    }
+           else {
+        qDebug() << "Start or end city not found.";
+    }
+
+}
+    }
+
+
+
+}
+
